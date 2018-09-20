@@ -2,18 +2,11 @@
 class Task03
   def bodytask
     puts "Введите размер матрицы:"
-    size = gets.chomp.to_i
-    i, n = 1, 1
-    while i <= size do
-      while n <= size do
-        print '0 ' if i != n
-        print '1 ' if i == n
-        n += 1
-      end
+    m_size = gets.chomp.to_i
+    m_size.times do |i|
+      m_size.times { |k| i == k ? print('1 ') : print('0 ') }
       puts
-      n = 1
-      i += 1
-    end
+    end  
   end
 end
-Task03.new.bodytask
+ Task03.new.bodytask

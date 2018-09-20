@@ -7,4 +7,4 @@ class Task01
     end
   end
 end
-Task01.new.bodytask
+# Task01.new.bodytask
