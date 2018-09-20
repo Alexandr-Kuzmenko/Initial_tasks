@@ -11,4 +11,4 @@ class Task02
     end
   end
 end
- Task02.new.bodytask
+# Task02.new.bodytask
