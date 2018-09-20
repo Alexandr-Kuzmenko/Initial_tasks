@@ -7,8 +7,7 @@ class Task04
     arr_values = h.values
     arr_values.delete_if { |x| x == {} || x.class != Hash }
     arr_values.size.times do |n|
-      h = arr_values[n] if arr_values[n].class == Hash
-      vsearch(h, key)
+      vsearch(arr_values[n], key) if arr_values[n].class == Hash
     end  
   end
 
@@ -20,12 +19,3 @@ class Task04
   end
 end
 # Task04.new.bodytask
-
-=begin
-  Изначальный вариант текущих строк 9-12:
-  n = 0
-  arr_values.each do
-    h = arr_values[n] if arr_values[n].class == Hash
-    vsearch(h, key)
-  end
-=end
