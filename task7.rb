@@ -1,29 +1,37 @@
+
 # Предыдущие таски обьеденить в классы, собрать вместе в модуле.
 # Каждый таск запускается с помощью консоли. 
 # То-есть, ввели в консоли 1 - запускается и выполняется первый таск.
+require '/home/developer/my_doc/Ruby_code/task1.rb'
+require '/home/developer/my_doc/Ruby_code/task2.rb'
+require '/home/developer/my_doc/Ruby_code/task3.rb'
+require '/home/developer/my_doc/Ruby_code/task4.rb'
+require '/home/developer/my_doc/Ruby_code/task5.rb'
+require '/home/developer/my_doc/Ruby_code/task6.rb'
+
 module Mine_module
   def task1
-    require '/home/developer/my_doc/Ruby_code/task1_var2.rb'
+    Task01.new.bodytask
   end
 
   def task2
-    require '/home/developer/my_doc/Ruby_code/task2.rb'
+    Task02.new.bodytask
   end
 
   def task3
-    require '/home/developer/my_doc/Ruby_code/task3.rb'
+    Task03.new.bodytask
   end
 
   def task4
-    require '/home/developer/my_doc/Ruby_code/task4.rb'
+    Task04.new.bodytask
   end
 
   def task5
-    require '/home/developer/my_doc/Ruby_code/task5.rb'
+    Task05.new.bodytask
   end
 
   def task6
-    require '/home/developer/my_doc/Ruby_code/task6.rb'
+    Task06.new.bodytask
   end
 end
 
@@ -36,7 +44,7 @@ class Ftask
   end
 
   def bodytask
-    puts "Выберите таск, который необходимо выполнить\n"
+    puts "Выберите таск, который необходимо выполнить (Например:3)\n"
     task = gets.chomp.to_i
     Ftask.new.choosing(task)
   end
