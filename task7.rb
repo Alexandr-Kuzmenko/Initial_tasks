@@ -8,6 +8,7 @@ require '/home/developer/my_doc/Ruby_code/task3.rb'
 require '/home/developer/my_doc/Ruby_code/task4.rb'
 require '/home/developer/my_doc/Ruby_code/task5.rb'
 require '/home/developer/my_doc/Ruby_code/task6.rb'
+require '/home/developer/my_doc/Ruby_code/task8.rb'
 
 module Mine_module
   def task1
@@ -33,6 +34,10 @@ module Mine_module
   def task6
     Task06.new.bodytask
   end
+
+  def task8
+    Task08.new.start
+  end
 end
 
 class Ftask
@@ -40,7 +45,7 @@ class Ftask
 
   def choosing(task)
     n_task = 'task' + task.to_s
-    eval ("#{n_task}") if task.between?(1, 6) 
+    eval ("#{n_task}") if task.between?(1, 8) 
   end
 
   def bodytask
