@@ -9,11 +9,8 @@ class Tree
     @rchild = nil
   end
 
-  def main_menu
-  end
-
-  def insert(x)  
-    if @root  
+  def insert(x) # Main method to create new nodes.
+    if @root
       case x <=> @root
       when -1
         @lchild == nil ? @lchild = Tree.new(x) : @lchild.insert(x)    
@@ -25,78 +22,66 @@ class Tree
     else  
       @root = x  
     end       
-    #p 'done'
+    #p 'Node created'
   end
 
-  def add_elem
-    #count = 0 if !count
-    #puts "Remember! You can not add the element that already exists" if count == 0
-    #puts "Enter the element, you want to add to tree" if count == 0
-    new_elem = gets.chomp
-    return main_menu if new_elem == 'exit'
-    string_check(new_elem) ? p('You have entered not a number') : insert(new_elem.to_i)
-    puts "Enter next element or print: exit - to exit"
-    #count += 1
-    add_elem
-  end
-
-  def string_check(elem)
-    m = 0
-    (("a".."z").to_a + ("A".."Z").to_a).each { |k| elem.scan(k) != [] ? m += 1 : m }
-    m > 0 ? true : false
-  end
-
-  def search(y)
+  def search(y) # Main method for starting search.
     if @root
-      return p "seeked value:#{y} is main root, no parents for it. left child:#{@lchild.root} right child:#{rchild.root}" if @root == y
-      smart_search(y)
+      return p "seeked value:#{y} is main root, no parents for it. left child:#{@lchild.root} right child:#{rchild.root}" if y == @root
+      way = 'tree'
+      out1, out2, out3, out4 = smart_search(y, way)
+      p "seeked value:#{out1} parent:#{out2} left child:#{out3} right child:#{out4}"
     else
       p "no values in tree present at all" 
     end
   end
-
-  def set_parent(par)
-    @@parent = par
-  end
   
-  def get_parent
-    @@parent
-  end
-  
-  def smart_search(y)  
+  def smart_search(y, way)  
+    way = way
     case y <=> @root
     when -1
       if @lchild != nil
-        set_parent(@root)
-        @lchild.smart_search(y)
+        set_parent(@root, @lchild)
+        way << '.lchild'
+        @lchild.smart_search(y, way)
       else
         p 'no such value in tree'
       end       
     when 1
-      if @lchild != nil
-        set_parent(@root)
-        @rchild.smart_search(y)
+      if @rchild != nil
+        set_parent(@root, @rchild)
+        way << '.rchild'
+        @rchild.smart_search(y, way)
       else
         p 'no such value in tree'
       end   
     when 0
       @lchild == nil ? left = "none" : left = @lchild.root
-      @lchild == nil ? right = "none" : right = @rchild.root
-      return p "seeked value:#{y} parent:#{get_parent} left child:#{left} right child:#{right}"
+      @rchild == nil ? right = "none" : right = @rchild.root
+      return y, get_parent[0], left, right, way
     end 
   end 
 
-  def array_view(tree) #Method of walkthrough forward
+  def set_parent(par, sub_tree)
+    @@parent = par
+    @@sub_tree = sub_tree
+  end
+  
+  def get_parent
+    return @@parent, @@sub_tree
+  end
+  
+  def array_view(tree) #Main method to make array from the tree.
     tree_keys = Array.new
     tree_keys << tree
     tree_data = Array.new
-    stage = 0
+    lvl = 0
     while tree_keys != [] do 
-      tree_data += ["|"]
-      stage += 1
+      tree_data += ["lvl:#{lvl}"]
+      lvl += 1
       tree_data, tree_keys = tree_walk(tree_data, tree_keys)
     end
-    tree_data 
+    print "#{tree_data}\n"
   end
 
   def tree_walk(data, keys)
@@ -107,58 +92,44 @@ class Tree
    return data, keys
   end
 
-  #def delete_elem(y)
-  #  search(y) 
-  #  
-  #end
-     
+  def delete_branch(y, tree) # Main method to delete nodes.
+    if @root
+      if y == @root
+        tree = nil
+        p 'you just deleted full tree'  
+      else
+        way = smart_search(y, 'tree')[4]
+        way << ' = nil'
+        eval(way)
+        p "branch #{y} deleted"
+      end
+    else
+      p 'no tree at all to delete'
+    end
+  end
+  
+  def start #Template for the start
+    tree = Tree.new
+    elems = [100, 50, 150, 25, 75, 125, 175, 12, 37, 62, 87, 112, 137, 162, 187]
+    elems.each { |x| tree.insert(x) }
+    print tree.array_view(tree)
+  end  
 end
 
-elems = [100, 50, 150, 25, 75, 125, 175, 12, 37, 62, 87, 112, 137, 162, 187]
-#elems.each { |n| print "#{n} "}
-#puts
+#Tree.new.start
 tree = Tree.new
+elems = [100, 50, 150, 25, 75, 125, 175, 12, 37, 62, 87, 112, 137, 162, 187]
 elems.each { |x| tree.insert(x) }
-tree.traverse {|x| print "#{x} " }
-puts
-#tree.add_elem
-
-print "#{tree.array_view(tree)}\n"
-#p true if tree.get_parent == nil
+print tree.array_view(tree)
 tree.search(37)
 tree.search(75)
-tree.search(100)
+tree.insert(289)
+tree.insert(132)
+tree.insert(7)
+tree.insert(77)
+tree.delete_branch(75, tree)
+print tree.array_view(tree)
 
-#tree.search(100)
-#puts tree.array_view { |x| print "#{x} #{x.class} " }
-#tree.traverse {|x| print "#{x} " }#{x.lchild}#{x.rchild} "}
-=begin
-puts
-puts
-tree.root ? puts("#{tree.root}") : p("no root")
-tree.lchild ? puts("#{tree.lchild.root}") : p("lchild nill")
-tree.rchild ? puts("#{tree.rchild.root}") : p("Rchild nill")
-#=begin
-tree.lchild.lchild ? puts("#{tree.lchild.lchild.root}") : p("ll_branch nill")
-tree.lchild.rchild ? puts("#{tree.lchild.rchild.root}") : p("lr_branch nill")
-tree.rchild.lchild ? puts("#{tree.rchild.lchild.root}") : p("rl_branch nill")
-tree.rchild.rchild ? puts("#{tree.rchild.rchild.root}") : p("rr_branch nill")
-puts
-
-puts
-puts "#{tree.class}"
-puts "#{tree.lchild.class}" 
-puts "#{tree.rchild.class}"
-puts "#{tree.lchild.lchild.class}"
-puts "#{tree.lchild.rchild.class}"
-puts "#{tree.rchild.lchild.class}"
-puts "#{tree.rchild.rchild.class}"
-puts
-
-=begin
-puts "#{tree.lchild.lchild.class}" 
-puts "#{tree.rchild.rchild.class}"
-
-tree.lchild.lchild ? puts("#{tree.lchild.lchild}") : p("Left's nill")
-tree.rchild.rchild ? puts("#{tree.rchild.rchild}") : p("Right's nill")
-=end 
+#tree.add_elem
+#puts tree
+#tree.search(100) 
