@@ -4,7 +4,7 @@ class Tree
   attr_accessor :root
 
   def initialize(x = nil)
-  	@root = x
+    @root = x
     @lchild = nil
     @rchild = nil
   end
@@ -13,15 +13,15 @@ class Tree
     if @root
       case x <=> @root
       when -1
-        @lchild == nil ? @lchild = Tree.new(x) : @lchild.insert(x)    
+        @lchild.nil? ? @lchild = Tree.new(x) : @lchild.insert(x)
       when 1
-        @rchild == nil ? @rchild = Tree.new(x) : @rchild.insert(x)  
+        @rchild.nil? ? @rchild = Tree.new(x) : @rchild.insert(x)
       when 0
-        return p("Impossible to add element #{x}, it already exists") 
+        return p("Impossible to add element #{x}, it already exists")
       end
-    else  
-      @root = x  
-    end       
+    else
+      @root = x
+    end
   end
 
   def search(y) # Main method for starting search.
@@ -31,11 +31,11 @@ class Tree
       out1, out2, out3, out4 = smart_search(y, way)
       p "seeked value:#{out1} parent:#{out2} left child:#{out3} right child:#{out4}"
     else
-      p 'no values in tree present at all' 
+      p 'no values in tree present at all'
     end
   end
-  
-  def smart_search(y, way)  
+
+  def smart_search(y, way)
     way = way
     case y <=> @root
     when -1
@@ -45,7 +45,7 @@ class Tree
         @lchild.smart_search(y, way)
       else
         p 'no such value in tree'
-      end       
+      end
     when 1
       if @rchild != nil
         set_parent(@root, @rchild)
@@ -53,29 +53,29 @@ class Tree
         @rchild.smart_search(y, way)
       else
         return p 'no such value in tree'
-      end   
+      end
     when 0
-      @lchild == nil ? left = "none" : left = @lchild.root
-      @rchild == nil ? right = "none" : right = @rchild.root
-      return y, get_parent[0], left, right, way
-    end 
-  end 
+      @lchild.nil? ? left = 'none' : left = @lchild.root
+      @rchild.nil? ? right = 'none' : right = @rchild.root
+      return y, getparent[0], left, right, way
+    end
+  end
 
   def set_parent(par, sub_tree)
     @@parent = par
     @@sub_tree = sub_tree
   end
-  
-  def get_parent
+
+  def getparent
     return @@parent, @@sub_tree
   end
-  
-  def array_view(tree) #Main method to make array from the tree.
-    tree_keys = Array.new
+
+  def array_view(tree) # Main method to make array from the tree.
+    tree_keys = []
     tree_keys << tree
-    tree_data = Array.new
+    tree_data = []
     lvl = 0
-    while tree_keys != [] do 
+    while tree_keys != []
       tree_data += ["lvl:#{lvl}"]
       lvl += 1
       tree_data, tree_keys = tree_walk(tree_data, tree_keys)
@@ -84,18 +84,18 @@ class Tree
   end
 
   def tree_walk(data, keys)
-   data += keys.map { |elem| elem.root }.sort
-   keys_left = keys.map { |elem| elem.lchild != nil ? elem.lchild : nil }.compact
-   keys_right = keys.map { |elem| elem.rchild != nil ? elem.rchild : nil }.compact
-   keys = keys_left + keys_right
-   return data, keys
+    data += keys.map { |elem| elem.root }.sort
+    keys_left = keys.map { |elem| elem.lchild != nil ? elem.lchild : nil }.compact
+    keys_right = keys.map { |elem| elem.rchild != nil ? elem.rchild : nil }.compact
+    keys = keys_left + keys_right
+    return data, keys
   end
 
   def delete_branch(y, tree) # Main method to delete nodes.
     if @root
       if y == @root
         tree = nil
-        p 'you just deleted full tree'  
+        p 'you just deleted full tree'
       else
         way = smart_search(y, 'tree')[4]
         way << ' = nil'
@@ -125,41 +125,40 @@ class Tree
     puts
     print tree.array_view(tree)
     puts
-    tree 
+    tree
     main_menu(tree)
   end
-# Дальше идет "интерфейс" управления деревом, в целом всё сверху удовлетворяет 4 функциям бинарного дерева, которые были в задании
 # Should be 2nd file, but later.
   def string_check(elem)
     m = 0
-    (("a".."z").to_a + ("A".."Z").to_a).each { |k| elem.scan(k) != [] ? m += 1 : m }
-    m > 0 ? true : false
+    (('a'..'z').to_a + ('A'..'Z').to_a).each { |k| elem.scan(k) != [] ? m += 1 : m }
+    m > 0
   end
 
-  def get_elem
-    new_elem = ""
+  def getelem
+    new_elem = ''
     loop do
       new_elem = gets.chomp
       if string_check(new_elem)
-        p('You have entered not a number') 
+        p('You have entered not a number')
       else
         new_elem = new_elem.to_i
         break
       end
     end
     new_elem
-  end  
+  end
 
   def start
-    tree = Tree.new    
+    tree = Tree.new
     main_menu(tree)
-  end  
+  end
 
   def main_menu(tree)
-    puts "Choose option \n 1: check the tree \n 2: Find node in tree \n 3: Insert node in tree \n 4: Delete tree branch \n 5: Run template tree (overwrite present tree)\n or print exit to exit"
+    puts "Choose option \n 1: check the tree \n 2: Find node in tree \n 3: Insert node in tree"
+    puts " 4: Delete tree branch \n 5: Run template tree (overwrite present tree)\n or print exit"
     opt = gets.chomp
     return if opt == 'exit'
-    n_task = 'opt' + opt.to_i.to_s
     meth1(tree) if opt.to_i == 1
     meth2(tree) if opt.to_i == 2
     meth3(tree) if opt.to_i == 3
@@ -174,25 +173,25 @@ class Tree
   end
 
   def meth2(tree)
-    puts "Enter the element you want to find in tree"
-    new_elem = get_elem
+    puts 'Enter the element you want to find in tree'
+    new_elem = getelem
     tree.search(new_elem)
     main_menu(tree)
   end
 
   def meth3(tree)
-    puts "Enter the element you want to add into the tree"
-    new_elem = get_elem
+    puts 'Enter the element you want to add into the tree'
+    new_elem = getelem
     tree.insert(new_elem)
     main_menu(tree)
   end
 
   def meth4(tree)
-    puts "Enter the element (and the following branch) you want to remove from the tree"
-    new_elem = get_elem
+    puts 'Enter the element (and the following branch) you want to remove from the tree'
+    new_elem = getelem
     tree.delete_branch(new_elem, tree)
     main_menu(tree)
-  end  
+  end
 end
 
 Tree.new.start
