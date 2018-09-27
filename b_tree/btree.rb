@@ -17,12 +17,11 @@ class Tree
       when 1
         @rchild == nil ? @rchild = Tree.new(x) : @rchild.insert(x)  
       when 0
-        return p "Impossible to add element #{x}, it already exists"  
+        return p("Impossible to add element #{x}, it already exists") 
       end
     else  
       @root = x  
     end       
-    #p 'Node created'
   end
 
   def search(y) # Main method for starting search.
@@ -32,7 +31,7 @@ class Tree
       out1, out2, out3, out4 = smart_search(y, way)
       p "seeked value:#{out1} parent:#{out2} left child:#{out3} right child:#{out4}"
     else
-      p "no values in tree present at all" 
+      p 'no values in tree present at all' 
     end
   end
   
@@ -53,7 +52,7 @@ class Tree
         way << '.rchild'
         @rchild.smart_search(y, way)
       else
-        p 'no such value in tree'
+        return p 'no such value in tree'
       end   
     when 0
       @lchild == nil ? left = "none" : left = @lchild.root
@@ -107,29 +106,93 @@ class Tree
       p 'no tree at all to delete'
     end
   end
-  
-  def start #Template for the start
+
+  def template
     tree = Tree.new
     elems = [100, 50, 150, 25, 75, 125, 175, 12, 37, 62, 87, 112, 137, 162, 187]
+    puts
     elems.each { |x| tree.insert(x) }
     print tree.array_view(tree)
+    puts
+    tree.search(37)
+    tree.search(75)
+    tree.insert(289)
+    tree.insert(132)
+    tree.insert(7)
+    tree.insert(77)
+    puts
+    tree.delete_branch(75, tree)
+    puts
+    print tree.array_view(tree)
+    puts
+    tree 
+    main_menu(tree)
+  end
+# Дальше идет "интерфейс" управления деревом, в целом всё сверху удовлетворяет 4 функциям бинарного дерева, которые были в задании
+# Should be 2nd file, but later.
+  def string_check(elem)
+    m = 0
+    (("a".."z").to_a + ("A".."Z").to_a).each { |k| elem.scan(k) != [] ? m += 1 : m }
+    m > 0 ? true : false
+  end
+
+  def get_elem
+    new_elem = ""
+    loop do
+      new_elem = gets.chomp
+      if string_check(new_elem)
+        p('You have entered not a number') 
+      else
+        new_elem = new_elem.to_i
+        break
+      end
+    end
+    new_elem
+  end  
+
+  def start
+    tree = Tree.new    
+    main_menu(tree)
+  end  
+
+  def main_menu(tree)
+    puts "Choose option \n 1: check the tree \n 2: Find node in tree \n 3: Insert node in tree \n 4: Delete tree branch \n 5: Run template tree (overwrite present tree)\n or print exit to exit"
+    opt = gets.chomp
+    return if opt == 'exit'
+    n_task = 'opt' + opt.to_i.to_s
+    meth1(tree) if opt.to_i == 1
+    meth2(tree) if opt.to_i == 2
+    meth3(tree) if opt.to_i == 3
+    meth4(tree) if opt.to_i == 4
+    template if opt.to_i == 5
+    main_menu(tree) if opt.to_i.between?(1, 5) == false
+  end
+
+  def meth1(tree)
+    print tree.array_view(tree)
+    main_menu(tree)
+  end
+
+  def meth2(tree)
+    puts "Enter the element you want to find in tree"
+    new_elem = get_elem
+    tree.search(new_elem)
+    main_menu(tree)
+  end
+
+  def meth3(tree)
+    puts "Enter the element you want to add into the tree"
+    new_elem = get_elem
+    tree.insert(new_elem)
+    main_menu(tree)
+  end
+
+  def meth4(tree)
+    puts "Enter the element (and the following branch) you want to remove from the tree"
+    new_elem = get_elem
+    tree.delete_branch(new_elem, tree)
+    main_menu(tree)
   end  
 end
 
-#Tree.new.start
-tree = Tree.new
-elems = [100, 50, 150, 25, 75, 125, 175, 12, 37, 62, 87, 112, 137, 162, 187]
-elems.each { |x| tree.insert(x) }
-print tree.array_view(tree)
-tree.search(37)
-tree.search(75)
-tree.insert(289)
-tree.insert(132)
-tree.insert(7)
-tree.insert(77)
-tree.delete_branch(75, tree)
-print tree.array_view(tree)
-
-#tree.add_elem
-#puts tree
-#tree.search(100) 
+Tree.new.start
