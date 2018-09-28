@@ -130,21 +130,15 @@ class Tree
   end
 # Should be 2nd file, but later.
   def string_check(elem)
-    m = 0
-    (('a'..'z').to_a + ('A'..'Z').to_a).each { |k| elem.scan(k) != [] ? m += 1 : m }
-    m > 0
+    (('a'..'z').to_a + ('A'..'Z').to_a).each { |k| return true if elem.include?(k) }
+    false
   end
 
   def getelem
     new_elem = ''
-    loop do
+    while new_elem.class == String
       new_elem = gets.chomp
-      if string_check(new_elem)
-        p('You have entered not a number')
-      else
-        new_elem = new_elem.to_i
-        break
-      end
+      string_check(new_elem) ? p('incorrect') : new_elem = new_elem.to_i
     end
     new_elem
   end
@@ -164,7 +158,7 @@ class Tree
     meth3(tree) if opt.to_i == 3
     meth4(tree) if opt.to_i == 4
     template if opt.to_i == 5
-    main_menu(tree) if opt.to_i.between?(1, 5) == false
+    main_menu(tree) unless opt.to_i.between?(1, 5)
   end
 
   def meth1(tree)
