@@ -29,12 +29,14 @@ end
 
 # Class field
 class Field < Coords
-  def initialize
-    p 'enter field size X'
-    x = getelem
+  def initialize(x = 5, y = 6)
+    p 'Enter field size X, or press Enter for default'
+    temp = getelem
+    temp.zero? ? x : x = temp
     @x = x
-    p 'enter field size Y'
-    y = getelem
+    p 'Enter field size Y, or press Enter for default'
+    temp = getelem
+    temp.zero? ? y : y = temp
     @y = y
   end
 
@@ -73,7 +75,7 @@ class Robot < Coords
       p 'You can not drop robot out of field'
     else
       @onfield = 1
-    p "robot coords #{x}:#{y} course:#{f}"
+      p "robot coords #{x}:#{y} course:#{f}"
     end
     menu
   end
