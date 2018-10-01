@@ -1,10 +1,7 @@
 # Написать метод, который принимает многомерный массив и тип данных, возвращает массив этих типов. 
 class Task06
-  def get_all(*array, type)   
-    array = array.flatten
-    arr_new = Array.new
-    array.size.times { |n| arr_new << array[n] if array[n].class.to_s == type }
-    arr_new
+  def get_all(array, type)   
+    array.flatten.map { |v| v if v.class.to_s == type }.compact
   end
 
   def bodytask
@@ -19,4 +16,4 @@ class Task06
     puts
   end
 end
-# Task06.new.bodytask
+p Task06.new.bodytask
