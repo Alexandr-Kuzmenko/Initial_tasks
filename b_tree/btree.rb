@@ -3,8 +3,8 @@ class Tree
   attr_accessor :rchild
   attr_accessor :root
 
-  def initialize(x = nil)
-    @root = x
+  def initialize
+    @root = nil
     @lchild = nil
     @rchild = nil
   end
@@ -39,7 +39,7 @@ class Tree
     way = way
     case y <=> @root
     when -1
-      if @lchild != nil
+      if !@lchild.nil?
         set_parent(@root, @lchild)
         way << '.lchild'
         @lchild.smart_search(y, way)
@@ -47,7 +47,7 @@ class Tree
         p 'no such value in tree'
       end
     when 1
-      if @rchild != nil
+      if !@rchild.nil?
         set_parent(@root, @rchild)
         way << '.rchild'
         @rchild.smart_search(y, way)
@@ -85,8 +85,8 @@ class Tree
 
   def tree_walk(data, keys)
     data += keys.map { |elem| elem.root }.sort
-    keys_left = keys.map { |elem| elem.lchild != nil ? elem.lchild : nil }.compact
-    keys_right = keys.map { |elem| elem.rchild != nil ? elem.rchild : nil }.compact
+    keys_left = keys.map { |elem| !elem.lchild.nil? ? elem.lchild : nil }.compact
+    keys_right = keys.map { |elem| !elem.rchild.nil? ? elem.rchild : nil }.compact
     keys = keys_left + keys_right
     return data, keys
   end

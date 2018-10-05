@@ -41,9 +41,7 @@ class Field < Coords
   end
 
   def border
-    xbord = @x - 1
-    ybord = @y - 1
-    return xbord, ybord
+    borders = [@x - 1, @y - 1]
   end
 end
 
